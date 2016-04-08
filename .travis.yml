@@ -1,0 +1,9 @@
+env:
+  - CC=clang CXX=clang++ npm_config_clang=1
+language: node_js
+before_install:
+- npm install -g npm@2
+node_js:
+- '0.10'
+- '4'
+- '5'
