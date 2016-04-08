@@ -51,7 +51,7 @@ module.exports = function (config) {
       (post ? post.headers['content-type'] + post.data : '');
     var key = new Buffer(config.apiSecret, 'base64');
     var signature = crypto.createHmac('sha256', key)
-      .update(canonicalRequest)
+      .update(canonicalRequest, 'utf8')
       .digest('base64');
     var auth = 'HHMAC; key="' + config.apiId +
       '"; signature="' + signature +
@@ -103,6 +103,13 @@ module.exports = function (config) {
             return cb(null, res, parsed.data);
           }
 
+          if (parsed.errors && Array.isArray(parsed.errors) &&
+              parsed.errors.length > 0 && parsed.errors[0].code) {
+            var e = new Error(result);
+            e.apiError = parsed.errors[0];
+            return cb(e);
+          }
+
           return cb(new Error(result));
         }
       });
@@ -131,7 +138,7 @@ module.exports = function (config) {
 
   function createArticleUploadFormData (article, bundleFiles, metadata) {
     metadata = metadata || {};
-    var articleJson = JSON.stringify(article, null, 2);
+    var articleJson = JSON.stringify(article);
     return {
       'article.json': {
         value: articleJson,
