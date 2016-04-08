@@ -1,0 +1,34 @@
+{
+  "name": "apple-news",
+  "version": "0.0.0",
+  "description": "Node.js client for Apple News API",
+  "main": "index.js",
+  "scripts": {
+    "lint": "semistandard | snazzy",
+    "test": "tape test && npm run lint",
+    "test:coverage": "nyc tape test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micnews/apple-news.git"
+  },
+  "author": "mic.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/micnews/apple-news/issues"
+  },
+  "homepage": "https://github.com/micnews/apple-news#readme",
+  "devDependencies": {
+    "async": "^2.0.0-rc.3",
+    "nyc": "^6.2.1",
+    "pem": "^1.8.1",
+    "semistandard": "^7.0.5",
+    "snazzy": "^3.0.0",
+    "tape": "^4.5.1"
+  },
+  "dependencies": {
+    "form-data": "^1.0.0-rc4",
+    "moment": "^2.12.0",
+    "object-assign": "^4.0.1"
+  }
+}
