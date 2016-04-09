@@ -157,6 +157,16 @@ module.exports = function (config) {
     };
   }
 
+  function articleMetadataFromOpts (opts) {
+    assert(typeof opts.isPreview === 'undefined' || typeof opts.isPreview === 'boolean');
+    assert(typeof opts.isSponsored === 'undefined' || typeof opts.isSponsored === 'boolean');
+
+    return {
+      isPreview: typeof opts.isPreview === 'boolean' ? opts.isPreview : true,
+      isSponsored: !!opts.isSponsored
+    };
+  }
+
   return {
     readChannel: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -222,9 +232,8 @@ module.exports = function (config) {
       assert(Object(opts.article) === opts.article, 'opts.article required');
       var channelId = opts.channelId;
       var bundleFiles = opts.bundleFiles || [];
-      var fd = createArticleUploadFormData(opts.article, bundleFiles, {
-        isPreview: true
-      });
+      var meta = articleMetadataFromOpts(opts);
+      var fd = createArticleUploadFormData(opts.article, bundleFiles, meta);
 
       makeRequest('POST', '/channels/' + channelId + '/articles', {
         formData: fd
@@ -268,10 +277,9 @@ module.exports = function (config) {
       assert(Object(opts.article) === opts.article, 'opts.article required');
       var articleId = opts.articleId;
       var bundleFiles = opts.bundleFiles || [];
-      var fd = createArticleUploadFormData(opts.article, bundleFiles, {
-        isPreview: true,
-        revision: opts.revision
-      });
+      var meta = articleMetadataFromOpts(opts);
+      meta.revision = opts.revision;
+      var fd = createArticleUploadFormData(opts.article, bundleFiles, meta);
 
       makeRequest('POST', '/articles/' + articleId, {
         formData: fd
