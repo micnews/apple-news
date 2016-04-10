@@ -9,9 +9,12 @@ var pem = require('pem');
 var async = require('async');
 var https = require('https');
 var test = require('tape');
+var fs = require('fs');
+var path = require('path');
+var port = 0;
 
 test('api', function (t) {
-  t.plan(11);
+  t.plan(13);
 
   var client = null;
   var server = null;
@@ -55,6 +58,20 @@ test('api', function (t) {
         t.pass('search articles by channel');
         return;
       }
+
+      if (req.url === '/image-1.jpg') {
+        res.writeHead(200);
+        fs.createReadStream(path.resolve(__dirname, 'image.jpg')).pipe(res);
+        t.pass('download image 1');
+        return;
+      }
+
+      if (req.url === '/image-1.png') {
+        res.writeHead(200);
+        fs.createReadStream(path.resolve(__dirname, 'image.png')).pipe(res);
+        t.pass('download image 2');
+        return;
+      }
     }
 
     if (req.method === 'POST') {
@@ -90,7 +107,7 @@ test('api', function (t) {
         t.error(err);
         server = https.createServer({ key: keys.serviceKey, cert: keys.certificate }, serverHandler)
         .listen(function () {
-          var port = server.address().port;
+          port = server.address().port;
           client = createClient({
             apiId: 'test-id',
             apiSecret: 'test-secret',
@@ -111,7 +128,11 @@ test('api', function (t) {
       client.readSection({ sectionId: sectionId }, callback);
     },
     function (callback) {
-      client.createArticle({ channelId: channelId, article: article }, callback);
+      var bundleFiles = {
+        'image1': 'https://localhost:' + port + '/image-1.jpg',
+        'image2': 'https://localhost:' + port + '/image-1.png'
+      };
+      client.createArticle({ channelId: channelId, article: article, bundleFiles: bundleFiles }, callback);
     },
     function (callback) {
       client.updateArticle({ articleId: articleId, revision: revision, article: article }, callback);

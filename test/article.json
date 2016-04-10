@@ -98,6 +98,14 @@
       "inlineTextStyles": []
     },
     {
+      "role": "photo",
+      "URL": "bundle://image1"
+    },
+    {
+      "role": "photo",
+      "URL": "bundle://image2"
+    },
+    {
       "role": "body",
       "text": "link\nnormal text bold text italic text bold italic text marked text\n",
       "textStyle": "bodyStyle",

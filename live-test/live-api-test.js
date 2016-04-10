@@ -7,17 +7,43 @@ var createClient = require('../');
 var article = require('../test/article.json');
 var channelId = process.env.CHANNEL_ID;
 var async = require('async');
+var http = require('http');
+var path = require('path');
+var fs = require('fs');
 
 var client = createClient({
   apiId: process.env.API_ID,
   apiSecret: process.env.API_SECRET
 });
 
+var server = null;
+var port = 0;
 var articleId = '';
 var revision = '';
 var sectionId = '';
 
 async.series([
+  function (callback) {
+    server = http.createServer(function (req, res) {
+      if (req.url === '/image-1.png') {
+        res.writeHead(200);
+        fs.createReadStream(path.resolve(__dirname, '..', 'test', 'image.png')).pipe(res);
+        return;
+      }
+
+      if (req.url === '/image-1.jpg') {
+        res.writeHead(200);
+        fs.createReadStream(path.resolve(__dirname, '..', 'test', 'image.jpg')).pipe(res);
+        return;
+      }
+
+      res.writeHead(404);
+      res.end();
+    }).listen(function () {
+      port = server.address().port;
+      callback();
+    });
+  },
   function (callback) {
     client.readChannel({ channelId: channelId }, function (err, data) {
       if (err) {
@@ -52,7 +78,12 @@ async.series([
     });
   },
   function (callback) {
-    client.createArticle({ channelId: channelId, article: article }, function (err, data) {
+    var bundleFiles = {
+      'image1': 'http://localhost:' + port + '/image-1.png',
+      'image2': 'http://localhost:' + port + '/image-1.jpg'
+    };
+
+    client.createArticle({ channelId: channelId, article: article, bundleFiles: bundleFiles }, function (err, data) {
       if (err) {
         return callback(err);
       }
@@ -125,4 +156,5 @@ async.series([
   }
 
   console.log('OK');
+  server.close();
 });

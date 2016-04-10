@@ -5,40 +5,84 @@ var objectAssign = require('object-assign');
 var FormData = require('form-data');
 var stream = require('stream');
 var https = require('https');
+var request = require('request');
+var async = require('async');
+var fileType = require('file-type');
 
 var host = 'news-api.apple.com';
 var CRLF = '\r\n';
 
+var validContentTypes = [
+  'application/octet-stream', // should be first in this list
+  'image/jpeg',
+  'image/png',
+  'image/gif'
+];
+
 function encodeFormData (formData, cb) {
   var form = new FormData();
 
-  Object.keys(formData).forEach(function (item) {
-    var value = formData[item].value;
-    var options = formData[item].options;
-    form.append(item, value, objectAssign({
-      header: '--' + form.getBoundary() + CRLF +
-        'Content-Type: application/json' + CRLF +
-        'Content-Disposition: form-data; filename=' + options.filename +
-          '; name=' + item +
-          '; size=' + Buffer.byteLength(value) + CRLF + CRLF
-    }, formData[item].options));
-  });
+  async.mapSeries(formData, function (item, callback) {
+    var value = item.value;
+    var options = item.options;
 
-  var converter = new stream.Writable();
-  var result = '';
-  converter._write = function (chunk, enc, cb) {
-    result += chunk.toString();
-    cb();
-  };
+    function append () {
+      var len = typeof value === 'string' ? Buffer.byteLength(value) : value.length;
+      var header = '--' + form.getBoundary() + CRLF +
+        'Content-Type: ' + options.contentType + CRLF +
+        'Content-Disposition: form-data' +
+        (item.filename ? '; filename=' + encodeURIComponent(options.filename) : '') +
+        (item.name ? '; name=' + encodeURIComponent(item.name) : '') +
+        '; size=' + len + CRLF + CRLF;
 
-  converter.on('finish', function () {
-    return cb(null, {
-      headers: form.getHeaders(),
-      data: result
+      form.append(item.name || item.filename, value,
+        objectAssign({ header: header, knownLength: len }, options));
+      callback();
+    }
+
+    if (options.contentType === 'application/json') {
+      return append();
+    }
+
+    request.get(value, {
+      timeout: 5000,
+      encoding: null,
+      rejectUnauthorized: process.env.NODE_ENV !== 'test'
+    }, function (err, res, body) {
+      if (err) {
+        return callback(err);
+      }
+
+      var contentType = fileType(body).mime;
+      if (validContentTypes.indexOf(contentType) === -1) {
+        contentType = validContentTypes[0];
+      }
+
+      options.contentType = contentType;
+      value = body;
+      return append();
     });
-  });
+  }, function (err, callback) {
+    if (err) {
+      return cb(err);
+    }
 
-  form.pipe(converter);
+    var converter = new stream.Writable();
+    var chunks = [];
+    converter._write = function (chunk, enc, cb) {
+      chunks.push(chunk);
+      cb();
+    };
+
+    converter.on('finish', function () {
+      return cb(null, {
+        headers: form.getHeaders(),
+        buffer: Buffer.concat(chunks)
+      });
+    });
+
+    form.pipe(converter);
+  });
 }
 
 module.exports = function (config) {
@@ -47,8 +91,12 @@ module.exports = function (config) {
 
   function sendRequest (method, endpoint, post, cb) {
     var date = moment().utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
-    var canonicalRequest = method + 'https://' + (config.host || host) + endpoint + date +
-      (post ? post.headers['content-type'] + post.data : '');
+    var canonicalRequest = Buffer(method + 'https://' + (config.host || host) + endpoint + date +
+      (post ? post.headers['content-type'] : ''), 'ascii');
+    if (post) {
+      canonicalRequest = Buffer.concat([canonicalRequest, post.buffer]);
+    }
+
     var key = new Buffer(config.apiSecret, 'base64');
     var signature = crypto.createHmac('sha256', key)
       .update(canonicalRequest, 'utf8')
@@ -116,7 +164,7 @@ module.exports = function (config) {
     });
 
     if (post) {
-      req.write(post.data);
+      req.write(post.buffer);
     }
 
     req.end();
@@ -137,24 +185,41 @@ module.exports = function (config) {
   }
 
   function createArticleUploadFormData (article, bundleFiles, metadata) {
+    bundleFiles = bundleFiles || {};
+    assert(typeof bundleFiles['article.json'] === 'undefined', 'bundle cannot contain article.json file');
+    assert(typeof bundleFiles['metadata'] === 'undefined', 'bundle cannot contain metadata file');
     metadata = metadata || {};
     var articleJson = JSON.stringify(article);
-    return {
-      'article.json': {
-        value: articleJson,
-        options: {
-          filename: 'article.json',
-          contentType: 'application/json'
-        }
-      },
-      metadata: {
-        value: JSON.stringify({ data: metadata }, null, 2),
-        options: {
-          filename: 'metadata',
-          contentType: 'application/json'
-        }
+    var result = [{
+      name: 'article.json',
+      filename: 'article.json',
+      value: articleJson,
+      options: {
+        filename: 'article.json',
+        contentType: 'application/json'
       }
-    };
+    }, {
+      name: 'metadata',
+      value: JSON.stringify({ data: metadata }),
+      options: {
+        filename: 'metadata',
+        contentType: 'application/json'
+      }
+    }];
+
+    Object.keys(bundleFiles).forEach(function (name, index) {
+      var url = bundleFiles[name];
+      result.push({
+        filename: name,
+        name: 'file' + index,
+        value: url,
+        options: {
+          filename: name
+        }
+      });
+    });
+
+    return result;
   }
 
   function articleMetadataFromOpts (opts) {
