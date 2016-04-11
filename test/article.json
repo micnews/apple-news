@@ -1,0 +1,151 @@
+{
+  "version": "1.0",
+  "identifier": "100",
+  "title": "Article Title",
+  "language": "en",
+  "layout": {
+    "columns": 7,
+    "width": 1024,
+    "margin": 70,
+    "gutter": 40
+  },
+  "componentTextStyles": {
+    "bodyStyle": {
+      "fontName": "HelveticaNeue",
+      "fontSize": 18
+    },
+    "heading1Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 32
+    },
+    "heading2Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 24
+    },
+    "heading3Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 19
+    },
+    "heading4Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 16
+    },
+    "heading5Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 13
+    },
+    "heading6Style": {
+      "fontName": "HelveticaNeue-Bold",
+      "fontSize": 11
+    }
+  },
+  "textStyles": {
+    "bodyBoldStyle": {
+      "fontName": "HelveticaNeue-Bold"
+    },
+    "bodyItalicStyle": {
+      "fontName": "HelveticaNeue-Italic"
+    },
+    "bodyBoldItalicStyle": {
+      "fontName": "HelveticaNeue-BoldItalic"
+    },
+    "bodyLinkTextStyle": {
+      "textColor": "#48BFEE",
+      "underline": true
+    }
+  },
+  "components": [
+    {
+      "role": "heading1",
+      "text": "header 1 text",
+      "textStyle": "heading1Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "heading2",
+      "text": "header 2 text",
+      "textStyle": "heading2Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "heading3",
+      "text": "header 3 text",
+      "textStyle": "heading3Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "heading4",
+      "text": "header 4 text",
+      "textStyle": "heading4Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "heading5",
+      "text": "header 5 text",
+      "textStyle": "heading5Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "heading6",
+      "text": "header 6 text",
+      "textStyle": "heading6Style",
+      "additions": [],
+      "inlineTextStyles": []
+    },
+    {
+      "role": "photo",
+      "URL": "bundle://image1"
+    },
+    {
+      "role": "photo",
+      "URL": "bundle://image2"
+    },
+    {
+      "role": "body",
+      "text": "link\nnormal text bold text italic text bold italic text marked text\n",
+      "textStyle": "bodyStyle",
+      "additions": [
+        {
+          "type": "link",
+          "rangeStart": 0,
+          "rangeLength": 4,
+          "URL": "http://mic.com"
+        }
+      ],
+      "inlineTextStyles": [
+        {
+          "rangeStart": 0,
+          "rangeLength": 4,
+          "textStyle": "bodyLinkTextStyle"
+        },
+        {
+          "rangeStart": 17,
+          "rangeLength": 10,
+          "textStyle": "bodyBoldStyle"
+        },
+        {
+          "rangeStart": 27,
+          "rangeLength": 12,
+          "textStyle": "bodyItalicStyle"
+        },
+        {
+          "rangeStart": 39,
+          "rangeLength": 17,
+          "textStyle": "bodyBoldItalicStyle"
+        }
+      ]
+    },
+    {
+      "role": "body",
+      "text": "other text\n",
+      "textStyle": "bodyStyle",
+      "additions": [],
+      "inlineTextStyles": []
+    }
+  ]
+}
