@@ -1,6 +1,6 @@
 {
   "name": "apple-news",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Node.js client for Apple News API",
   "main": "index.js",
   "scripts": {
