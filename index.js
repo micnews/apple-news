@@ -18,18 +18,7 @@ module.exports = function (config) {
       assert(typeof opts.channelId === 'string', 'opts.channelId required');
       var channelId = opts.channelId;
 
-      makeRequest('GET', '/channels/' + channelId, {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('readChannel error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      makeRequest('GET', '/channels/' + channelId, {}, cb);
     },
     listSections: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -37,18 +26,7 @@ module.exports = function (config) {
       assert(typeof opts.channelId === 'string', 'opts.channelId required');
       var channelId = opts.channelId;
 
-      makeRequest('GET', '/channels/' + channelId + '/sections', {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('readChannel error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      makeRequest('GET', '/channels/' + channelId + '/sections', {}, cb);
     },
     readSection: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -56,18 +34,7 @@ module.exports = function (config) {
       assert(typeof opts.sectionId === 'string', 'opts.sectionId required');
       var sectionId = opts.sectionId;
 
-      makeRequest('GET', '/sections/' + sectionId, {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('readChannel error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      makeRequest('GET', '/sections/' + sectionId, {}, cb);
     },
     createArticle: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -81,18 +48,7 @@ module.exports = function (config) {
 
       makeRequest('POST', '/channels/' + channelId + '/articles', {
         formData: fd
-      }, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 201 on success
-        if (res.statusCode !== 201) {
-          return cb(new Error('createArticle error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      }, cb);
     },
     readArticle: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -100,18 +56,7 @@ module.exports = function (config) {
       assert(typeof opts.articleId === 'string', 'opts.articleId required');
       var articleId = opts.articleId;
 
-      makeRequest('GET', '/articles/' + articleId, {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('readChannel error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      makeRequest('GET', '/articles/' + articleId, {}, cb);
     },
     updateArticle: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -127,18 +72,7 @@ module.exports = function (config) {
 
       makeRequest('POST', '/articles/' + articleId, {
         formData: fd
-      }, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('updateArticle error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      }, cb);
     },
     deleteArticle: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -146,18 +80,7 @@ module.exports = function (config) {
       assert(typeof opts.articleId === 'string', 'opts.articleId required');
       var articleId = opts.articleId;
 
-      makeRequest('DELETE', '/articles/' + articleId, {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 204 No Content on success, with no response body
-        if (res.statusCode !== 204) {
-          return cb(new Error('deleteArticle error code ' + res.statusCode));
-        }
-
-        return cb(null);
-      });
+      makeRequest('DELETE', '/articles/' + articleId, {}, cb);
     },
     searchArticles: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
@@ -170,18 +93,7 @@ module.exports = function (config) {
         ? '/channels/' + channelId + '/articles'
         : '/sections/' + sectionId + '/articles';
 
-      makeRequest('GET', endpoint, {}, function (err, res, body) {
-        if (err) {
-          return cb(err);
-        }
-
-        // Endpoint returns 200 on success
-        if (res.statusCode !== 200) {
-          return cb(new Error('searchArticles error code ' + res.statusCode));
-        }
-
-        return cb(null, body);
-      });
+      makeRequest('GET', endpoint, {}, cb);
     }
   };
 };
