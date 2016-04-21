@@ -132,7 +132,15 @@ test('api', function (t) {
         'image1': 'https://localhost:' + port + '/image-1.jpg',
         'image2': 'https://localhost:' + port + '/image-1.png'
       };
-      client.createArticle({ channelId: channelId, article: article, bundleFiles: bundleFiles }, callback);
+      client.createArticle({
+        channelId: channelId,
+        article: article,
+        bundleFiles: bundleFiles,
+        sections: [
+          'https://news-api.apple.com/sections/0a468272-356f-3b61-afa3-c4f989954180',
+          'https://news-api.apple.com/sections/5cec0b36-529e-31bc-bc1e-3eaccbc15b97'
+        ]
+      }, callback);
     },
     function (callback) {
       client.updateArticle({ articleId: articleId, revision: revision, article: article }, callback);
