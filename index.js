@@ -94,6 +94,22 @@ module.exports = function (config) {
         : '/sections/' + sectionId + '/articles';
 
       makeRequest('GET', endpoint, {}, cb);
-    }
+    },
+    listReports: function (opts, cb) {
+      assert(Object(opts) === opts, 'opts required');
+      assert(typeof cb === 'function', 'cb required');
+      assert(typeof opts.channelId === 'string', 'opts.channelId required');
+      var channelId = opts.channelId;
+
+      makeRequest('GET', '/channels/' + channelId + '/reports', {}, cb);
+    },
+    readReport: function (opts, cb) {
+      assert(Object(opts) === opts, 'opts required');
+      assert(typeof cb === 'function', 'cb required');
+      assert(typeof opts.reportId === 'string', 'opts.reportId required');
+      var reportId = opts.reportId;
+
+      makeRequest('GET', '/reports/' + reportId, {}, cb);
+    },
   };
 };
