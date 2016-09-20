@@ -63,12 +63,12 @@ module.exports = function (config) {
       assert(typeof cb === 'function', 'cb required');
       assert(typeof opts.articleId === 'string', 'opts.articleId required');
       assert(typeof opts.revision === 'string', 'opts.revision required');
-      assert(Object(opts.article) === opts.article, 'opts.article required');
+      var article = opts.article || null;
       var articleId = opts.articleId;
       var bundleFiles = opts.bundleFiles || [];
       var meta = articleMetadataFromOpts(opts);
       meta.revision = opts.revision;
-      var fd = createArticleUploadFormData(opts.article, bundleFiles, meta);
+      var fd = createArticleUploadFormData(article, bundleFiles, meta);
 
       makeRequest('POST', '/articles/' + articleId, {
         formData: fd
