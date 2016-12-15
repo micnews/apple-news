@@ -25,7 +25,7 @@ client.listSections ({ channelId }, cb)
 client.readSection ({ sectionId }, cb)
 client.createArticle ({ channelId, article, bundleFiles, isPreview = true }, cb)
 client.readArticle ({ articleId }, cb)
-client.updateArticle ({ articleId, revision, article }, cb)
+client.updateArticle ({ articleId, revision, article, isPreview = true }, cb)
 client.deleteArticle ({ articleId }, cb)
 ```
 
