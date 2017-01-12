@@ -14,7 +14,7 @@ var path = require('path');
 var port = 0;
 
 test('api', function (t) {
-  t.plan(13);
+  t.plan(14);
 
   var client = null;
   var server = null;
@@ -66,10 +66,16 @@ test('api', function (t) {
         return;
       }
 
-      if (req.url === '/image-1.png') {
+      if (req.url === '/image-2.png') {
         res.writeHead(200);
         fs.createReadStream(path.resolve(__dirname, 'image.png')).pipe(res);
         t.pass('download image 2');
+        return;
+      }
+
+      if (req.url === '/image-3.png') {
+        res.writeHead(404);
+        res.end(0);
         return;
       }
     }
@@ -130,7 +136,7 @@ test('api', function (t) {
     function (callback) {
       var bundleFiles = {
         'image1': 'https://localhost:' + port + '/image-1.jpg',
-        'image2': 'https://localhost:' + port + '/image-1.png'
+        'image2': 'https://localhost:' + port + '/image-2.png'
       };
       client.createArticle({
         channelId: channelId,
@@ -156,6 +162,23 @@ test('api', function (t) {
     },
     function (callback) {
       client.deleteArticle({ articleId: articleId }, callback);
+    },
+    function (callback) {
+      var bundleFiles = {
+        'image3': 'https://localhost:' + port + '/image-3.png'
+      };
+      client.createArticle({
+        channelId: channelId,
+        article: article,
+        bundleFiles: bundleFiles,
+        sections: [
+          'https://news-api.apple.com/sections/0a468272-356f-3b61-afa3-c4f989954180',
+          'https://news-api.apple.com/sections/5cec0b36-529e-31bc-bc1e-3eaccbc15b97'
+        ]
+      }, function (err) {
+        t.equal(err.message, 'file not found: https://localhost:' + port + '/image-3.png', 'Error was caught when resource returned 404');
+        callback();
+      });
     }
   ], function (err) {
     server.close();
