@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/micnews/apple-news#readme",
   "devDependencies": {
-    "nyc": "^8.3.0",
+    "nyc": "^9.0.1",
     "pem": "^1.8.1",
     "semistandard": "^9.0.0",
     "snazzy": "^5.0.0",
