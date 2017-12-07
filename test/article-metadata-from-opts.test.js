@@ -8,6 +8,21 @@ test('articleMetadataFromOpts()', function (t) {
     'it is a function'
   );
 
+  t.throws(
+    function () { articleMetadataFromOpts({ isPreview: 'foo' }); },
+    'it throws if isPreview is not a boolean'
+  );
+
+  t.throws(
+    function () { articleMetadataFromOpts({ isSponsored: 'foo' }); },
+    'it throws if isSponsored is not a boolean'
+  );
+
+  t.throws(
+    function () { articleMetadataFromOpts({ maturityRating: 1 }); },
+    'it throws if maturityRating is not a string'
+  );
+
   t.is(
     articleMetadataFromOpts({ isPreview: true }).isPreview,
     true,
