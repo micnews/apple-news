@@ -1,6 +1,7 @@
 'use strict';
 
 process.env.NODE_ENV = 'test';
+require('./article-metadata-from-opts.test.js');
 const createClient = require('../');
 const article = require('./article.json');
 const channelId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
