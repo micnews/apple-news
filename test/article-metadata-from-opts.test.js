@@ -50,11 +50,24 @@ test('articleMetadataFromOpts()', function (t) {
     'it does not return a sections property when sections have not been supplied'
   );
 
+  t.is(
+    articleMetadataFromOpts({}).maturityRating,
+    undefined,
+    'it does not return a maturityRating property when maturityRating has not been supplied'
+  );
+
   const sections = ['foo', 'bar', 'baz'];
   t.deepEqual(
     articleMetadataFromOpts({ sections: sections }).links.sections,
     sections,
     'it sets links.sections to the supplied sections array'
+  );
+
+  const maturityRating = 'foobar';
+  t.is(
+    articleMetadataFromOpts({ maturityRating: maturityRating }).maturityRating,
+    maturityRating,
+    'it sets maturityRating to the supplied maturity rating'
   );
 
   t.end();
