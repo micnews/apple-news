@@ -1,26 +1,26 @@
-var assert = require('assert');
+const assert = require('assert');
 assert(process.env.API_ID, 'API_ID environment variable required');
 assert(process.env.API_SECRET, 'API_SECRET environment variable required');
 assert(process.env.CHANNEL_ID, 'CHANNEL_ID environment variable required');
 
-var createClient = require('../');
-var article = require('../test/article.json');
-var channelId = process.env.CHANNEL_ID;
-var async = require('async');
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
+const createClient = require('../');
+const article = require('../test/article.json');
+const channelId = process.env.CHANNEL_ID;
+const async = require('async');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
 
-var client = createClient({
+const client = createClient({
   apiId: process.env.API_ID,
   apiSecret: process.env.API_SECRET
 });
 
-var server = null;
-var port = 0;
-var articleId = '';
-var revision = '';
-var sectionId = '';
+let server = null;
+let port = 0;
+let articleId = '';
+let revision = '';
+let sectionId = '';
 
 async.series([
   function (callback) {
@@ -78,7 +78,7 @@ async.series([
     });
   },
   function (callback) {
-    var bundleFiles = {
+    const bundleFiles = {
       'image1': 'http://localhost:' + port + '/image-1.png',
       'image2': 'http://localhost:' + port + '/image-1.jpg'
     };

@@ -1,23 +1,25 @@
+'use strict';
+
 process.env.NODE_ENV = 'test';
-var createClient = require('../');
-var article = require('./article.json');
-var channelId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
-var sectionId = '99999999-9999-9999-9999-999999999999';
-var articleId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-var revision = 'REV00000011';
-var pem = require('pem');
-var async = require('async');
-var https = require('https');
-var test = require('tape');
-var fs = require('fs');
-var path = require('path');
-var port = 0;
+const createClient = require('../');
+const article = require('./article.json');
+const channelId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+const sectionId = '99999999-9999-9999-9999-999999999999';
+const articleId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+const revision = 'REV00000011';
+const pem = require('pem');
+const async = require('async');
+const https = require('https');
+const test = require('tape');
+const fs = require('fs');
+const path = require('path');
+let port = 0;
 
 test('api', function (t) {
   t.plan(14);
 
-  var client = null;
-  var server = null;
+  let client = null;
+  let server = null;
 
   function serverHandler (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -112,16 +114,16 @@ test('api', function (t) {
       pem.createCertificate({ days: 5, selfSigned: true }, function (err, keys) {
         t.error(err);
         server = https.createServer({ key: keys.serviceKey, cert: keys.certificate }, serverHandler)
-        .listen(function () {
-          port = server.address().port;
-          client = createClient({
-            apiId: 'test-id',
-            apiSecret: 'test-secret',
-            host: 'localhost',
-            port: port
+          .listen(function () {
+            port = server.address().port;
+            client = createClient({
+              apiId: 'test-id',
+              apiSecret: 'test-secret',
+              host: 'localhost',
+              port: port
+            });
+            callback(null);
           });
-          callback(null);
-        });
       });
     },
     function (callback) {
@@ -134,7 +136,7 @@ test('api', function (t) {
       client.readSection({ sectionId: sectionId }, callback);
     },
     function (callback) {
-      var bundleFiles = {
+      const bundleFiles = {
         'image1': 'https://localhost:' + port + '/image-1.jpg',
         'image2': 'https://localhost:' + port + '/image-2.png'
       };
@@ -164,7 +166,7 @@ test('api', function (t) {
       client.deleteArticle({ articleId: articleId }, callback);
     },
     function (callback) {
-      var bundleFiles = {
+      const bundleFiles = {
         'image3': 'https://localhost:' + port + '/image-3.png'
       };
       client.createArticle({
