@@ -112,16 +112,16 @@ test('api', function (t) {
       pem.createCertificate({ days: 5, selfSigned: true }, function (err, keys) {
         t.error(err);
         server = https.createServer({ key: keys.serviceKey, cert: keys.certificate }, serverHandler)
-        .listen(function () {
-          port = server.address().port;
-          client = createClient({
-            apiId: 'test-id',
-            apiSecret: 'test-secret',
-            host: 'localhost',
-            port: port
+          .listen(function () {
+            port = server.address().port;
+            client = createClient({
+              apiId: 'test-id',
+              apiSecret: 'test-secret',
+              host: 'localhost',
+              port: port
+            });
+            callback(null);
           });
-          callback(null);
-        });
       });
     },
     function (callback) {
