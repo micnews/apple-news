@@ -1,5 +1,5 @@
-var test = require('tape');
-var articleMetadataFromOpts = require('../lib/article-metadata-from-opts.js');
+const test = require('tape');
+const articleMetadataFromOpts = require('../lib/article-metadata-from-opts.js');
 
 test('articleMetadataFromOpts()', function (t) {
   t.is(
@@ -71,14 +71,14 @@ test('articleMetadataFromOpts()', function (t) {
     'it does not return a maturityRating property when maturityRating has not been supplied'
   );
 
-  var sections = ['foo', 'bar', 'baz'];
+  const sections = ['foo', 'bar', 'baz'];
   t.deepEqual(
     articleMetadataFromOpts({ sections: sections }).links.sections,
     sections,
     'it sets links.sections to the supplied sections array'
   );
 
-  var maturityRating = 'foobar';
+  const maturityRating = 'foobar';
   t.is(
     articleMetadataFromOpts({ maturityRating: maturityRating }).maturityRating,
     maturityRating,
