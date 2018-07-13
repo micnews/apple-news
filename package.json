@@ -1,5 +1,5 @@
 {
-  "name": "apple-news",
+  "name": "@bustle/apple-news",
   "version": "2.1.0",
   "description": "Node.js client for Apple News API",
   "main": "index.js",
