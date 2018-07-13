@@ -36,7 +36,6 @@
     "file-type": "^3.8.0",
     "form-data": "^2.0.0",
     "object-assign": "^4.0.1",
-    "request": "^2.81.0",
     "safe-buffer": "^5.1.1"
   },
   "engines": {
