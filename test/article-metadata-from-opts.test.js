@@ -37,8 +37,8 @@ test('articleMetadataFromOpts()', function (t) {
 
   t.is(
     articleMetadataFromOpts({}).isPreview,
-    true,
-    'it returns isPreview=true when opts.isPreview is missing'
+    false,
+    'it returns isPreview=false when opts.isPreview is missing'
   );
 
   t.is(
