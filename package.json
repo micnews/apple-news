@@ -1,6 +1,6 @@
 {
   "name": "@bustle/apple-news",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Node.js client for Apple News API",
   "main": "index.js",
   "scripts": {
