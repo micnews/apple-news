@@ -19,27 +19,26 @@
   },
   "homepage": "https://github.com/micnews/apple-news#readme",
   "devDependencies": {
-    "async": "^2.5.0",
-    "eslint": "^4.12.1",
+    "async": "^3.2.0",
+    "eslint": "^4.19.1",
     "eslint-config-semistandard": "^11.0.0",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "nyc": "^8.3.0",
-    "pem": "^1.8.1",
-    "tape": "^4.5.1"
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "nyc": "^15.0.1",
+    "pem": "^1.14.4",
+    "tape": "^4.13.2"
   },
   "dependencies": {
     "eachy": "^1.0.5",
-    "file-type": "^3.8.0",
-    "form-data": "^2.0.0",
-    "object-assign": "^4.0.1",
-    "safe-buffer": "^5.1.1"
+    "file-type": "^14.1.4",
+    "form-data": "^3.0.0",
+    "object-assign": "^4.0.1"
   },
   "engines": {
-    "node": ">=4.0.0",
+    "node": ">=6.0.0",
     "npm": ">=5.0.0"
   }
 }
