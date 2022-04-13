@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/micnews/apple-news#readme",
   "devDependencies": {
-    "async": "^2.5.0",
+    "async": "^3.2.2",
     "eslint": "^4.12.1",
     "eslint-config-semistandard": "^11.0.0",
     "eslint-config-standard": "^10.2.1",
