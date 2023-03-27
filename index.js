@@ -12,6 +12,7 @@ module.exports = function (config) {
   var makeRequest = setupMakeRequest(config);
 
   return {
+    makeRequest,
     readChannel: function (opts, cb) {
       assert(Object(opts) === opts, 'opts required');
       assert(typeof cb === 'function', 'cb required');
