@@ -5,7 +5,7 @@ API wrapper module for Apple News API https://developer.apple.com/library/ios/do
 Supports creating, reading, updating, deleting, and searching articles.
 Also supports reading and listing sections, as well as reading channels!
 
-**For Node versions < 4, use `apple-news@^1`. For Node versions >= 4 use `apple-news@^2`**
+**For Node versions < 4, use `apple-news@^1`. For Node versions >= 4 use `apple-news@^2`. For Node versions >= 6 use `apple-news@^3`**
 
 ## Install
 

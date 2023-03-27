@@ -6,7 +6,7 @@ assert(process.env.CHANNEL_ID, 'CHANNEL_ID environment variable required');
 const createClient = require('../');
 const article = require('../test/article.json');
 const channelId = process.env.CHANNEL_ID;
-const async = require('async');
+const series = require('async/series');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
@@ -22,7 +22,7 @@ let articleId = '';
 let revision = '';
 let sectionId = '';
 
-async.series([
+series([
   function (callback) {
     server = http.createServer(function (req, res) {
       if (req.url === '/image-1.png') {
